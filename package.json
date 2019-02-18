@@ -39,6 +39,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "start": "npm run develop",
+    "dev": "npm run start",
     "serve": "gatsby serve"
   }
 }
