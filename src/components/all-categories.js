@@ -1,7 +1,6 @@
 import React from 'react';
 
-const Post = ({ pageContext: {categories}}) => {
-  console.log(categories);
+const AllCategories = ({ pageContext: {categories}}) => {
   return (
     <div>
       <h1>Awesome MDX Blog</h1>
@@ -9,4 +8,4 @@ const Post = ({ pageContext: {categories}}) => {
   );
 };
 
-export default Post;
+export default AllCategories;

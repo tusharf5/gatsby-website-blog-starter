@@ -1,8 +1,7 @@
 import React from "react"
 
-const Post = (data) => {
-  console.log(data);
+const Category = (data) => {
   return <div>Hello</div>;
 };
 
-export default Post;
+export default Category;

@@ -1,8 +1,7 @@
 import React from "react"
 
-const Post = ({ pageContext: { tags } }) => {
-  console.log(tags);
+const AllTags = ({ pageContext: { tags } }) => {
   return <div>Hello</div>;
 };
 
-export default Post;
+export default AllTags;

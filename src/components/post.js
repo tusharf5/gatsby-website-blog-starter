@@ -2,13 +2,12 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import MDXRenderer from 'gatsby-mdx/mdx-renderer';
 
-const Post = ({ data: { mdx: post } }) => {
-  console.log(post);
+const Post = ({ data: { mdx: post }, pageContext: { id, next, prev } }) => {
   return (
-    <div>
+    <article className="ts-article">
       <h1>{post.frontmatter.title}</h1>
       <MDXRenderer>{post.code.body}</MDXRenderer>
-    </div>
+    </article>
   );
 };
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
 
-const Post = ({ data }) => {
+const AllPosts = ({ data }) => {
   const { edges: posts } = data.allMdx;
-  console.log(data);
   return (
     <div>
       <h1>Awesome MDX Blog</h1>
@@ -14,6 +13,7 @@ const Post = ({ data }) => {
               <h2>{post.frontmatter.title}</h2>
             </Link>
             <p>{post.frontmatter.excerpt}</p>
+            <p>{post.timeToRead}</p>
           </li>
         ))}
       </ul>
@@ -21,14 +21,15 @@ const Post = ({ data }) => {
   );
 };
 
-export default Post;
+export default AllPosts;
 
 export const pageQuery = graphql`
   query blogIndex {
-    allMdx {
+    allMdx(filter: { frontmatter: { draft: { ne: true } } } sort: { fields: [fields___date], order: DESC }) {
       edges {
         node {
           id
+          timeToRead
           frontmatter {
             title
             excerpt

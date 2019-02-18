@@ -21,13 +21,18 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     // 10. Example 2 -  index.mdx -> `/`
     const value = createFilePath({ node, getNode, trailingSlash: false });
     const slug = value + '-' + kebabCase(node.frontmatter.title);
-    console.log(slug);
+    const date = value.slice(1);
     // createNodeField creates an additional field on the node that you can query in your graphql
     // { node: { fields: { slug: 'value' } } }
     createNodeField({
       name: 'slug',
       node,
       value: `/posts${slug}`
+    });
+    createNodeField({
+      name: 'date',
+      node,
+      value: date
     });
   }
 };
@@ -47,10 +52,13 @@ exports.createPages = ({ graphql, actions }) => {
                   id
                   frontmatter {
                     category
+                    title
                     tags
+                    draft
                   }
                   fields {
                     slug
+                    date
                   }
                 }
               }
@@ -64,14 +72,21 @@ exports.createPages = ({ graphql, actions }) => {
           reject(result.errors);
         }
 
-        // will store tag/category names as keys and the 
-        // value will be the total number of times 
+        // will store tag/category names as keys and the
+        // value will be the total number of times
         // that tag/category is use in all of the nodes
         // { js: 4, git: 3 }
         const tags = {};
         const categories = {};
 
-        result.data.allMdx.edges.forEach(({ node }) => {
+        // all the posts except draft = true
+        const posts = result.data.allMdx.edges
+          .filter(({ node }) => !node.frontmatter.draft)
+          .sort(function(a, b) {
+            return new Date(a.node.fields.date) - new Date(b.node.fields.date);
+          });
+
+        posts.forEach(({ node }, index) => {
           const category = node.frontmatter.category.toLowerCase();
           if (categories[category]) {
             categories[category] = categories[category] + 1;
@@ -87,11 +102,27 @@ exports.createPages = ({ graphql, actions }) => {
             }
           });
 
+          const next = posts[index + 1]
+            ? {
+                path: posts[index + 1].node.fields.slug,
+                title: posts[index + 1].node.frontmatter.title
+              }
+            : null;
+          const prev = posts[index - 1]
+            ? {
+                path: posts[index - 1].node.fields.slug,
+                title: posts[index - 1].node.frontmatter.title
+              }
+            : null;
           // create a page for this node/post
           createPage({
             path: node.fields.slug,
             component: path.resolve(`./src/components/post.js`),
-            context: { id: node.id }
+            context: {
+              id: node.id,
+              next,
+              prev
+            }
           });
         });
 
