@@ -1,9 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: 'Tushar Sharma',
-    description:
-      'Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.',
-    author: '@tusharf5'
+    title: 'Gatsby Starter Blog and Website',
+    siteUrl: 'INSERT_WEBSITE_URL_HERE',
+    description: 'INSERT_DESC_HERE',
+    author: 'INSERT_AUTHOR_NAME_HERE'
   },
   plugins: [
     'gatsby-plugin-lodash',
@@ -19,39 +19,42 @@ module.exports = {
       }
     },
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "posts",
+        name: 'posts',
         path: `${__dirname}/content/posts`
       }
     },
     {
-      resolve: 'gatsby-mdx',
+      resolve: 'gatsby-plugin-mdx',
       options: {
+        plugins: ['gatsby-remark-images'],
+        extensions: [`.mdx`, `.md`],
         gatsbyRemarkPlugins: [
           {
             resolve: 'gatsby-remark-external-links',
             options: {
               target: '_blank',
-              rel: 'nofollow noopener noreferrer',
-            },
+              rel: 'nofollow noopener noreferrer'
+            }
           },
           {
             resolve: 'gatsby-remark-images',
             options: {
               maxWidth: 830,
-              quality: 90,
-              withWebp: true,
               linkImagesToOriginal: false,
-            },
+              quality: 90,
+              withWebp: true
+            }
           },
           {
             resolve: 'gatsby-remark-autolink-headers',
             options: {
-              maintainCase: false,
-            },
+              maintainCase: false
+            }
           },
-        ],
+          'gatsby-remark-mermaid'
+        ]
       }
     },
     'gatsby-plugin-catch-links',
@@ -59,15 +62,16 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: 'gatsby-starter-default',
-        short_name: 'starter',
+        name: 'INSERT_NAME_HERE',
+        short_name: 'INSERT_SHORT_NAME_HERE',
         start_url: '/',
-        background_color: '#663399',
-        theme_color: '#663399',
-        display: 'minimal-ui',
-        icon: 'src/images/gatsby-icon.png' // This path is relative to the root of the site.
+        background_color: '#454646',
+        theme_color: '#454646',
+        display: 'INSERT_ICON_NAME_HERE'
+        //icon: 'src/images/head.png' // This path is relative to the root of the site.
       }
     },
-    'gatsby-plugin-offline'
+    'gatsby-plugin-offline',
+    `gatsby-plugin-netlify`
   ]
 };

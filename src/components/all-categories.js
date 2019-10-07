@@ -1,10 +1,26 @@
 import React from 'react';
+import { Link } from 'gatsby';
 
-const AllCategories = ({ pageContext: {categories}}) => {
+import Layout from './layout';
+
+const AllCategories = ({ pageContext: { categories } }) => {
   return (
-    <div>
-      <h1>Awesome MDX Blog</h1>
-    </div>
+    <Layout>
+      <header>
+        <h1>All Categories</h1>
+      </header>
+      <main>
+        <ul>
+          {Object.keys(categories).map(category => (
+            <li key={category}>
+              <Link to={`/categories/${category}`}>
+                {category} <span>({categories[category]})</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </Layout>
   );
 };
 

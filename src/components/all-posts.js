@@ -1,31 +1,37 @@
 import React from 'react';
-import { Link, graphql } from 'gatsby';
+import { graphql } from 'gatsby';
+
+import PostCard from './post-card';
+import Layout from './layout';
 
 const AllPosts = ({ data }) => {
   const { edges: posts } = data.allMdx;
   return (
-    <div>
-      <h1>Awesome MDX Blog</h1>
-      <ul>
-        {posts.map(({ node: post }) => (
-          <li key={post.id}>
-            <Link to={post.fields.slug}>
-              <h2>{post.frontmatter.title}</h2>
-            </Link>
-            <p>{post.frontmatter.excerpt}</p>
-            <p>{post.timeToRead}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Layout>
+      <header>
+        <h1>All Posts</h1>
+      </header>
+      <main>
+        <ul>
+          {posts.map(({ node: post }) => (
+            <li key={post.id}>
+              <PostCard article={post} />
+            </li>
+          ))}
+        </ul>
+      </main>
+    </Layout>
   );
 };
 
 export default AllPosts;
 
-export const pageQuery = graphql`
-  query blogIndex {
-    allMdx(filter: { frontmatter: { draft: { ne: true } } } sort: { fields: [fields___date], order: DESC }) {
+export const query = graphql`
+  query blogPosts {
+    allMdx(
+      filter: { frontmatter: { draft: { ne: true } } }
+      sort: { fields: [fields___date], order: DESC }
+    ) {
       edges {
         node {
           id
@@ -38,6 +44,7 @@ export const pageQuery = graphql`
           }
           fields {
             slug
+            date
           }
         }
       }

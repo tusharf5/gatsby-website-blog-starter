@@ -1,0 +1,6 @@
+# Redirect domain aliases to primary domain
+https://tushar-sharma.in/* https://tusharsharma.dev/:splat 301!
+https://www.tushar-sharma.in/* https://tusharsharma.dev/:splat 301!
+
+# Optional: Redirect default Netlify subdomain to primary domain
+https://tusharf5-website.netlify.com/* https://tusharsharma.dev/:splat 301!

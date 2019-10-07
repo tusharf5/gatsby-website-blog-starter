@@ -1,13 +1,33 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import MDXRenderer from 'gatsby-mdx/mdx-renderer';
+import { MDXRenderer } from 'gatsby-plugin-mdx';
 
-const Post = ({ data: { mdx: post }, pageContext: { id, next, prev } }) => {
+import SEO from './seo';
+import Layout from './layout';
+
+const Post = ({ data: { mdx }, pageContext: { id, next, prev } }) => {
   return (
-    <article className="ts-article">
-      <h1>{post.frontmatter.title}</h1>
-      <MDXRenderer>{post.code.body}</MDXRenderer>
-    </article>
+    <Layout>
+      <SEO
+        title={mdx.frontmatter.title}
+        description={mdx.frontmatter.excerpt}
+        keywords={[...mdx.frontmatter.tags, mdx.frontmatter.category]}
+      />
+      <main>
+        <article>
+          <header>
+            <h1>{mdx.frontmatter.title}</h1>
+            <div>
+              <h2>{mdx.frontmatter.excerpt}</h2>
+              <h2>{mdx.fields.date}</h2>
+            </div>
+          </header>
+          <div>
+            <MDXRenderer>{mdx.body}</MDXRenderer>
+          </div>
+        </article>
+      </main>
+    </Layout>
   );
 };
 
@@ -16,16 +36,18 @@ export default Post;
 export const query = graphql`
   query postBySlug($id: String!) {
     mdx(id: { eq: $id }) {
-      code {
-        body
-      }
+      id
+      body
+      timeToRead
       frontmatter {
         title
         tags
         category
         excerpt
       }
-      timeToRead
+      fields {
+        date
+      }
     }
   }
 `;
